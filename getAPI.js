@@ -16,13 +16,13 @@ app.get('/', function(request, response) {
 app.use('/user', require('./authmiddleware.js'));
 app.use('/user', require('./routes/userDB.js'));
 
-app.post('/token', async(req, res, next) => {
+app.post('/token', async function(request, response, next) {
     token = await jwt.sign({
         type: 'JWT',
     }, SECRET_KEY, {
         expiresIn: '1m', // 만료시간 1분
     });
-    return res.status(200).json({
+    return response.status(200).json({
         code: 200,
         message: '토큰이 발급되었습니다.',
         token: token

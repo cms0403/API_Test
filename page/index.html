@@ -46,14 +46,19 @@
     var nmbirthBtn = document.getElementById("nmbirthBtn");
     var birthForm = document.getElementById("birthForm");
     var deleteForm = document.getElementById("deleteForm");
+
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
     //학번으로 데이터 확인
     testBtn.addEventListener("click", function() {
         var token = getCookie('Access-Token');
         if(testId.value != "") {
             $.ajax({
-                type: 'GET',
+              	type: 'GET',
                 url: "/user/" + testId.value,
-                // headers: {"Access-Token":token},
                 headers: {
                     "token":token
                 },
@@ -61,16 +66,14 @@
                     console.log(response);
                 },
                 error: function (xhr, textStatus, error) {
-                    console.log("error: " + error + " xhr: " + xhr + " textStatus: " + textStatus);
-                    console.log(xhr);
-                    if(xhr.responseJSON.errormessage != "") {
+                    if(xhr.responseJSON.errormessage != "") { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
-                    }else if(textStatus == "parsererror") {
+                    } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
                     } else if(textStatus == "error") {
                         alert("숫자만 입력해주세요");
                     } else {
-                        alert(xhr.responseJSON.errormessage);
+                        alert("?");
                     }
                 }
             });
@@ -85,14 +88,9 @@
         var userBirth = $("#userBirth").val();
         if(userCode != "" && userBirth != "") {
             var token = getCookie('Access-Token');
-            // alert("학번 생년월일 작성 완료");
-            // window.location.assign("/user/code/" + userCode.value + "/birth/" + userBirth.value);
-            // birthForm.action="/user/put/code/" + userCode + "/birth/" + userBirth + "?method=PUT";
-            // birthForm.submit();
             $.ajax({
                 type: 'PUT',
                 url: "/user/put/code/" + userCode + "/birth/" + userBirth,
-                // headers: {"Access-Token":token},
                 headers: {
                     "token":token
                 },
@@ -100,16 +98,14 @@
                     alert(userCode + " 학번 학생 생년월일 업데이트 완료")
                 },
                 error: function (xhr, textStatus, error) {
-                    console.log("error: " + error + " xhr: " + xhr + " textStatus: " + textStatus);
-                    console.log(xhr);
-                    if(xhr.responseJSON.errormessage != "") {
+                    if(xhr.responseJSON.errormessage != "") { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
                     } else if(textStatus == "error") {
                         alert("숫자만 입력해주세요");
                     } else {
-                        alert(xhr.responseJSON.errormessage);
+                        alert("?");
                     }
                 }
             });
@@ -122,10 +118,8 @@
     $("#delBtn").click(function() {
         var delCode = $("#delCode").val();
         var delName = $("#delName").val();
-        if(delCode.value != "" && delName != "") {
+        if(delCode != "" && delName != "") {
             var token = getCookie('Access-Token');
-            // deleteForm.action="/user/code/" + delCode + "/name/" + delName + "?method=DELETE";
-            // deleteForm.submit();
             $.ajax({
                 type: 'DELETE',
                 url: "/user/code/" + delCode + "/name/" + delName,
@@ -136,9 +130,7 @@
                     alert(delName + "(" + delCode + ") 삭제 완료");
                 },
                 error: function (xhr, textStatus, error) {
-                    console.log("error: " + error + " xhr: " + xhr + " textStatus: " + textStatus);
-                    console.log(xhr);
-                    if(xhr.responseJSON.errormessage != "") {
+                    if(xhr.responseJSON.errormessage != "") { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
@@ -153,11 +145,6 @@
             alert("학번과 이름을 작성해주세요");
         }
     });
-
-    function getCookie(name) {
-        var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
 
     $("#tokenBtn").click(function(){
         $.ajax({
@@ -177,7 +164,6 @@
         $.ajax({
             type: 'GET',
             url: `/tokencheck`,
-            // headers: {"Access-Token":token},
             headers: {"token":token},
             success: function (response) {
                 alert("정상적인 토큰!");

@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'Hello';
 
-const authMiddleware = async (req, res, next) => {
-	const accessToken = req.headers['token'];
+const authMiddleware = async function(request, response, next) {
+	const accessToken = request.headers['token'];
 	if (accessToken == null) {
-		res.status(403).json({success:false, errormessage:'토큰이 존재하지않습니다.'});
+		response.status(403).json({success:false, errormessage:'토큰이 존재하지않습니다.'});
 	} else {
 		try {
 			const tokenInfo = await new Promise((resolve, reject) => {
@@ -17,10 +17,10 @@ const authMiddleware = async (req, res, next) => {
 						}
 					});
 			});
-			req.tokenInfo = tokenInfo;
+			request.tokenInfo = tokenInfo;
 			next();
 		} catch(err) {
-			res.status(403).json({success:false, errormessage:'토큰인증 실패'});
+			response.status(403).json({success:false, errormessage:'토큰인증 실패'});
 		}
 	}
 }

@@ -16,8 +16,7 @@ module.exports = pool;
 router.get('/', async function(request, response) {
     try{
         const query = await pool; //Query 실행을 위한 Pool 지정
-        const result = await query.request() //Query 요청
-            // .input('KEY', request.params.key) //하단 query에 @로 들어가는 파라미터 값을 사전에 설정
+        const result = await query.request() //Query 요청s
             .query("SELECT * FROM PRACTICE_USER_MAS WHERE UM_USE_YN = 'Y'");
         response.json(result.recordset); //Response에 결과값을 포함하여 전달
     }catch(err){
@@ -61,12 +60,6 @@ router.delete('/code/:code/name/:name', async function(request, response) {
             .input('CODE', request.params.code)
             .input('NAME', request.params.name)
             .query("DELETE FROM PRACTICE_USER_MAS WHERE UM_USER_CODE = @CODE AND UM_USER_NM = @NAME")
-        // response.alert("hi");
-        // response.send("hi / " + result.rowsAffected);
-        // if(result.rowsAffected == "1") {
-        //     alert("hello");
-        // }
-        // response.redirect("/");
         response.send(result);
     } catch (error) {
         response.status(500);
