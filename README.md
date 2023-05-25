@@ -1,3 +1,6 @@
+# 설치 모듈
+npm install express jsonwebtoken method-override
+
 # API_Test
 1. `getAPI.js` 파일:
 
