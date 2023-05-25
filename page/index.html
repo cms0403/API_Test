@@ -6,37 +6,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #777;
+            margin: 20px 0;
+        }
+        small {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            height: 30px;
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 588px;
+        }
+        input[type="button"] {
+            height: 30px;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: auto;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #f5f5f5;
+        }
+        .message {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
-    <div style="height:1px;border-top: #777 solid 1px;"></div>
-    <small>/user</small>
-    <div>
-        <input type="text" id="testId" style="height:19px">
-        <input type="button" id="testBtn" style="height:25px" value="버튼">
-    </div>
-    <br>
-    <div style="height:1px;border-top: #777 solid 1px;"></div>
-    <small>생년월일 업데이트</small>
-    <div>
-        <small>학번: </small><input type="text" id="userCode" style="height:19px"><br>
-        <small>생년월일: </small><input type="text" id="userBirth" style="height:19px">
-        <input type="button" id="nmbirthBtn" style="height:25px" value="버튼">
-    </div>
-    <br>
-    <div style="height:1px;border-top: #777 solid 1px;"></div>
-    <small>학생 삭제</small>
-    <div>
-        <small>학번: </small><input type="text" id="delCode" style="height:19px"><br>
-        <small>이름: </small><input type="text" id="delName" style="height:19px">
-        <input type="button" id="delBtn" style="height:25px" value="삭제">
-    </div>
-    <br>
-    <div style="height:1px;border-top: #777 solid 1px;"></div>
-    <small>토큰 발행(1분)</small>
-    <div>
-        <!-- <input type="submit" id="tokenSubmit" value="토큰 발행 SUBMIT"> -->
-        <input type="button" id="tokenBtn" value="토큰 발행 버튼">
-        <input type="button" id="tokenCheck" value="토큰 확인">
+    <div class="container">
+        <div>
+            <small>/user</small>
+            <div>
+                <input type="text" id="testId" placeholder="학번">
+                <input type="button" id="testBtn" value="확인">
+            </div>
+        </div>
+        <hr>
+        <div>
+            <small>생년월일 업데이트</small>
+            <div>
+                <input type="text" id="userCode" placeholder="학번">
+                <br>
+                <input type="text" id="userBirth" placeholder="생년월일">
+                <input type="button" id="nmbirthBtn" value="업데이트">
+            </div>
+        </div>
+        <hr>
+        <div>
+            <small>학생 삭제</small>
+            <div>
+                <input type="text" id="delCode" placeholder="학번">
+                <br>
+                <input type="text" id="delName" placeholder="이름">
+                <input type="button" id="delBtn" value="삭제">
+            </div>
+        </div>
+        <hr>
+        <div>
+            <small>토큰 발행 (1분)</small>
+            <div>
+                <input type="button" id="tokenBtn" value="토큰 발행">
+                <input type="button" id="tokenCheck" value="토큰 확인">
+            </div>
+        </div>
+        <div class="message" id="message"></div>
     </div>
 </body>
 </html>
@@ -63,10 +127,13 @@
                     "token":token
                 },
                 success: function (response) {
-                    console.log(response);
+                    var jsonData = JSON.stringify(response, null, 2); // JSON 데이터를 이쁘게 정렬하여 문자열로 변환
+                    //alert(jsonData); // alert 창에 JSON 데이터 표시
+                    document.getElementById("message").innerText = jsonData;
                 },
                 error: function (xhr, textStatus, error) {
-                    if(xhr.responseJSON.errormessage != "") { //토큰인증 실패 메세지
+                    console.log(xhr.responseJSON)
+                    if(xhr.responseJSON != undefined) { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
@@ -98,7 +165,7 @@
                     alert(userCode + " 학번 학생 생년월일 업데이트 완료")
                 },
                 error: function (xhr, textStatus, error) {
-                    if(xhr.responseJSON.errormessage != "") { //토큰인증 실패 메세지
+                    if(xhr.responseJSON.errormessage != undefined) { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
@@ -130,7 +197,7 @@
                     alert(delName + "(" + delCode + ") 삭제 완료");
                 },
                 error: function (xhr, textStatus, error) {
-                    if(xhr.responseJSON.errormessage != "") { //토큰인증 실패 메세지
+                    if(xhr.responseJSON.errormessage != undefined) { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
