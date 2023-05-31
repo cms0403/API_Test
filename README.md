@@ -1,10 +1,12 @@
+# JWT(JSON WEB TOKEN)
+웹 애플리케이션에서 인증과 정보 교환을 위해 사용되는 토큰 기반의 인증 방식. 이 토큰은 JSON 형식으로 인코딩되어 있으며, 클라이언트와 서버 간의 안전한 통신을 가능하게 한다.
+
 # 설치 모듈
 npm install express jsonwebtoken method-override
 
 # API_Test
 1. `getAPI.js` 파일:
 
-   - Express 및 필요한 모듈들을 가져옵니다.
    - 서버를 생성하고, `method-override` 미들웨어를 사용합니다.
    - 라우터를 설정합니다.
    - `/` 경로에 대한 GET 요청을 처리하여 정적 파일 `index.html`을 응답합니다.
@@ -16,7 +18,6 @@ npm install express jsonwebtoken method-override
 
 2. `userDB.js` 파일:
 
-   - Express 및 필요한 모듈들을 가져옵니다.
    - `mssql` 모듈과 데이터베이스 연결을 위한 설정 파일(`db_pool_config.json`)을 사용합니다.
    - MSSQL 데이터베이스와 연결되는 연결 풀(`pool`)을 생성합니다.
    - `/` 경로에 대한 GET 요청을 처리하여 `PRACTICE_USER_MAS` 테이블에서 `UM_USE_YN`이 'Y'인 레코드를 조회합니다.
@@ -27,7 +28,6 @@ npm install express jsonwebtoken method-override
 
 3. `authmiddleware.js` 파일:
 
-   - `jsonwebtoken` 모듈을 가져옵니다.
    - `SECRET_KEY`를 정의합니다.
    - `authMiddleware` 함수를 정의합니다. 이 함수는 JWT 토큰의 유효성을 검사하는 미들웨어입니다.
    - 요청 헤더에서 `token` 값을 가져옵니다.
