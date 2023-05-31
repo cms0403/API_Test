@@ -13,11 +13,11 @@ const pool = new mssql.ConnectionPool(config)
 
 module.exports = pool;
 
-router.get('/', async function(request, response) {
+router.get('/', async (request, response) => {
     try{
         const query = await pool; //Query 실행을 위한 Pool 지정
         const result = await query.request() //Query 요청s
-            .query("SELECT * FROM PRACTICE_USER_MAS WHERE UM_USE_YN = 'Y'");
+            .query("SELECT UM_USER_CODE, UM_USER_NM FROM PRACTICE_USER_MAS WHERE UM_USE_YN = 'Y'");
         response.json(result.recordset); //Response에 결과값을 포함하여 전달
     }catch(err){
         response.status(500); //에러 발생시 Response 상태를 서버에러인 500에러로 세팅
@@ -25,7 +25,7 @@ router.get('/', async function(request, response) {
     }
 });
 
-router.get('/:code', async function(request, response) {
+router.get('/:code', async (request, response) => {
     try {
         const query = await pool;
         const result = await query.request()
@@ -39,13 +39,20 @@ router.get('/:code', async function(request, response) {
     }
 });
 
-router.put('/put/code/:code/birth/:birth', async function(request, response) {
+router.patch('/patch/code/:code/birth/:birth', async (request, response) => {
     try {
         const query = await pool;
         const result = await query.request()
             .input('CODE', request.params.code)
             .input('BIRTH', request.params.birth)
             .query("UPDATE PRACTICE_USER_MAS SET UM_USER_BIRTH = @BIRTH WHERE UM_USER_CODE = @CODE")
+
+        // if (result.recordset && result.recordset.length > 0) {
+        //     response.send(result.recordset[0]);
+        // } else {
+        //     response.status(404);
+        //     response.send('No updated record found.');
+        // };
         response.send(result);
     } catch (error) {
         response.status(500);
@@ -53,7 +60,7 @@ router.put('/put/code/:code/birth/:birth', async function(request, response) {
     }
 })
 
-router.delete('/code/:code/name/:name', async function(request, response) {
+router.delete('/code/:code/name/:name', async (request, response) => {
     try {
         const query = await pool;
         const result = await query.request()

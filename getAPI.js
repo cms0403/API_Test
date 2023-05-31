@@ -1,22 +1,22 @@
-var express = require('express');
+const express = require('express');
 const jwt = require('jsonwebtoken');
 // const pool = require('./sql');
-const SECRET_KEY = 'Hello';
-const methodOverride = require('method-override');
+const SECRET_KEY = 'ded20d62f08e408e132b2acdcf808614cf2b213251994a3b1aad51358e352506';
+//const methodOverride = require('method-override'); //put, delete 요청을 처리하기위해 필요 (HTML form태그에서)
 
 //서버 생성
-var app = express();
-app.use(methodOverride('method'));
+const app = express();
+//app.use(methodOverride('method'));
 
 //라우터 설정
-app.get('/', function(request, response) {
+app.get('/', (request, response) => {
     response.sendFile(__dirname + '/page/index.html');
 })
 
 app.use('/user', require('./authmiddleware.js'));
 app.use('/user', require('./routes/userDB.js'));
 
-app.post('/token', async function(request, response, next) {
+app.post('/token', async (request, response, next) => {
     token = await jwt.sign({
         type: 'JWT',
     }, SECRET_KEY, {
@@ -29,7 +29,7 @@ app.post('/token', async function(request, response, next) {
     });
 });
 
-app.get('/tokencheck', function(request, response) {
+app.get('/tokencheck', (request, response) => {
     var token = request.headers['token'];
     try {
         var payload = jwt.verify(token, SECRET_KEY);
@@ -42,6 +42,6 @@ app.get('/tokencheck', function(request, response) {
 })
 
 //서버실행
-app.listen(52273, function () {
+app.listen(52273, () => {
     console.log('Server Running at http://127.0.0.1:52273');
 })
