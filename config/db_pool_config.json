@@ -1,11 +1,11 @@
 {
-    "server": "--",
-    "options": {"encrypt":false, "database": "--" },
+    "server": "",
+    "options": {"encrypt":false, "database": "" },
     "authentication":{
         "type":"default",
         "options":{
-            "userName":"--",
-            "password":"--"
+            "userName":"",
+            "password":"@"
         }
     },
     "dialectOptions": {

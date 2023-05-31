@@ -66,6 +66,13 @@
 <body>
     <div class="container">
         <div>
+            <small>학생 명단 확인</small>
+            <div>
+                <input type="button" id="allList" value="명단 확인">
+            </div>
+        </div>
+        <hr>
+        <div>
             <small>/user</small>
             <div>
                 <input type="text" id="testId" placeholder="학번">
@@ -116,8 +123,40 @@
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    //학번으로 데이터 확인
-    testBtn.addEventListener("click", function() {
+    //전체명단 확인(GET)
+    $('#allList').click(() => {
+        var token = getCookie('Access-Token');
+        $.ajax({
+            type: 'GET',
+            url: "/user",
+            headers: {
+                "token":token
+            },
+            success: function (response) {
+                var jsonData = JSON.stringify(response, null, 2); // JSON 데이터를 이쁘게 정렬하여 문자열로 변환
+                //document.getElementById("message").innerText = jsonData;
+
+                var allText = "";
+                allText = allText + "<table>"
+                allText = allText + "<tr><th>학번</th><th>이름</th></tr>"    
+                for(i=0; i<response.length; i++) {
+                    allText = allText + "<tr><td>" + response[i].UM_USER_CODE + "</td><td>" + response[i].UM_USER_NM + "</td></th>"
+                }
+                allText = allText + "</table>"
+                console.log(response.length)
+                console.log(response[0].UM_USER_CODE)
+                document.getElementById("message").innerHTML = allText;
+            },
+            error: function (xhr, textStatus, error) {
+                if(xhr.responseJSON != undefined) { //토큰인증 실패 메세지
+                    alert(xhr.responseJSON.errormessage);
+                }
+            }
+        });
+    })
+    
+    //학번으로 데이터 확인(GET)
+    testBtn.addEventListener("click", () => {
         var token = getCookie('Access-Token');
         if(testId.value != "") {
             $.ajax({
@@ -127,6 +166,7 @@
                     "token":token
                 },
                 success: function (response) {
+                    console.log(response.UM_USER_CODE)
                     var jsonData = JSON.stringify(response, null, 2); // JSON 데이터를 이쁘게 정렬하여 문자열로 변환
                     //alert(jsonData); // alert 창에 JSON 데이터 표시
                     document.getElementById("message").innerText = jsonData;
@@ -149,15 +189,15 @@
         }
     });
 
-    //데이터 업데이트 (PUT)
+    //데이터 부분 업데이트 (PATCH)
     nmbirthBtn.addEventListener("click", function() {
         var userCode = $("#userCode").val();
         var userBirth = $("#userBirth").val();
         if(userCode != "" && userBirth != "") {
             var token = getCookie('Access-Token');
             $.ajax({
-                type: 'PUT',
-                url: "/user/put/code/" + userCode + "/birth/" + userBirth,
+                type: 'PATCH',
+                url: "/user/patch/code/" + userCode + "/birth/" + userBirth,
                 headers: {
                     "token":token
                 },
@@ -165,7 +205,7 @@
                     alert(userCode + " 학번 학생 생년월일 업데이트 완료")
                 },
                 error: function (xhr, textStatus, error) {
-                    if(xhr.responseJSON.errormessage != undefined) { //토큰인증 실패 메세지
+                    if(xhr.responseJSON != undefined) { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
@@ -197,7 +237,7 @@
                     alert(delName + "(" + delCode + ") 삭제 완료");
                 },
                 error: function (xhr, textStatus, error) {
-                    if(xhr.responseJSON.errormessage != undefined) { //토큰인증 실패 메세지
+                    if(xhr.responseJSON != undefined) { //토큰인증 실패 메세지
                         alert(xhr.responseJSON.errormessage);
                     } else if(textStatus == "parsererror") {
                         alert("해당 유저가 없습니다.");
@@ -213,6 +253,7 @@
         }
     });
 
+    //토큰 발행 버튼
     $("#tokenBtn").click(function(){
         $.ajax({
             type: 'POST',
@@ -226,6 +267,7 @@
         });
     });
 
+    //토큰 확인 버튼
     $("#tokenCheck").click(function() {
         var token = getCookie('Access-Token');
         $.ajax({
