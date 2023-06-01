@@ -1,3 +1,6 @@
+<img src="/img/all_list.jpg">
+<img src="/img/mem_code.jpg">
+
 # JWT(JSON WEB TOKEN)
 웹 애플리케이션에서 인증과 정보 교환을 위해 사용되는 토큰 기반의 인증 방식. 이 토큰은 JSON 형식으로 인코딩되어 있으며, 클라이언트와 서버 간의 안전한 통신을 가능하게 한다.
 
