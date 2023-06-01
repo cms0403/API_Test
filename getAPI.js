@@ -1,12 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-// const pool = require('./sql');
-const SECRET_KEY = 'ded20d62f08e408e132b2acdcf808614cf2b213251994a3b1aad51358e352506';
-//const methodOverride = require('method-override'); //put, delete 요청을 처리하기위해 필요 (HTML form태그에서)
-
+const SECRET_KEY = require('./secret_key.js');
 //서버 생성
 const app = express();
-//app.use(methodOverride('method'));
 
 //라우터 설정
 app.get('/', (request, response) => {
