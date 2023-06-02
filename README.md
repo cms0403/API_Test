@@ -12,13 +12,11 @@ npm install express jsonwebtoken
 # API_Test
 1. `getAPI.js` 파일:
 
-   - 라우터를 설정합니다.
    - `/` 경로에 대한 GET 요청을 처리하여 정적 파일 `index.html`을 응답합니다.
    - `/user` 경로에 대한 미들웨어 `authmiddleware.js`를 사용합니다.
    - `/user` 경로에 대한 라우터 `userDB.js`를 사용합니다.
    - `/token` 경로에 대한 POST 요청을 처리하여 JWT 토큰을 발급합니다.
    - `/tokencheck` 경로에 대한 GET 요청을 처리하여 토큰의 유효성을 검사합니다.
-   - 서버를 실행하고 해당 포트에서 수신 대기합니다.
 
 2. `userDB.js` 파일:
 
@@ -26,7 +24,7 @@ npm install express jsonwebtoken
    - MSSQL 데이터베이스와 연결되는 연결 풀(`pool`)을 생성합니다.
    - `/` 경로에 대한 GET 요청을 처리하여 `PRACTICE_USER_MAS` 테이블에서 `UM_USE_YN`이 'Y'인 레코드를 조회합니다.
    - `/:code` 경로에 대한 GET 요청을 처리하여 `UM_USER_CODE`가 `:code`와 일치하고 `UM_USE_YN`이 'Y'인 레코드를 조회합니다.
-   - `/put/code/:code/birth/:birth` 경로에 대한 PUT 요청을 처리하여 `UM_USER_CODE`가 `:code`와 일치하는 레코드의 `UM_USER_BIRTH` 값을 `:birth`로 업데이트합니다.
+   - `/put/code/:code/birth/:birth` 경로에 대한 PATCH 요청을 처리하여 `UM_USER_CODE`가 `:code`와 일치하는 레코드의 `UM_USER_BIRTH` 값을 `:birth`로 업데이트합니다.
    - `/code/:code/name/:name` 경로에 대한 DELETE 요청을 처리하여 `UM_USER_CODE`가 `:code`와 일치하고 `UM_USER_NM`이 `:name`과 일치하는 레코드를 삭제합니다.
    - 주석 처리된 프로시저 사용 코드는 데이터베이스의 프로시저를 사용하여 작업을 수행하는 예시입니다.
 
