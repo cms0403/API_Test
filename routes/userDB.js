@@ -17,7 +17,7 @@ router.get('/', async (request, response) => {
     try{
         const query = await pool; //Query 실행을 위한 Pool 지정
         const result = await query.request() //Query 요청
-            .query("SELECT UM_USER_CODE, UM_USER_NM FROM PRACTICE_USER_MAS WHERE UM_USE_YN = 'Y'");
+            .query("SELECT UM_USER_CODE, UM_USER_NM FROM PRACTICE_USER_MAS WHERE UM_USE_YN = 'Y' ORDER BY UM_USER_CODE ASC");
         response.json(result.recordset); //Response에 결과값을 포함하여 전달
     }catch(err){
         response.status(500); //에러 발생시 Response 상태를 서버에러인 500에러로 세팅
@@ -38,7 +38,7 @@ router.get('/:code', async (request, response) => {
     }
 });
 
-router.patch('/patch/code/:code/birth/:birth', async (request, response) => {
+router.patch('/code/:code/birth/:birth', async (request, response) => {
     try {
         const query = await pool;
         const result = await query.request()
@@ -50,7 +50,23 @@ router.patch('/patch/code/:code/birth/:birth', async (request, response) => {
         response.status(500);
         response.send(error.message);
     }
-})
+});
+
+//프로시저 사용
+router.post('/name/:name/age/:age/gender/:gender', async (request, response) => {
+    try {
+        const query = await pool;
+        const result = await query.request()
+            .input('USER_NAME', mssql.NVarChar, request.params.name)
+            .input('USER_AGE', mssql.Numeric, request.params.age)
+            .input('USER_GENDER', mssql.NChar, request.params.gender)
+            .execute("INSERT_PUM_USER");
+        response.send(result);
+    } catch (error) {
+        response.status(500);
+        response.send(error.message);
+    }
+});
 
 router.delete('/code/:code/name/:name', async (request, response) => {
     try {
@@ -65,34 +81,5 @@ router.delete('/code/:code/name/:name', async (request, response) => {
         response.send(error.message);
     }
 })
-
-
-//프로시저 사용 
-// router.get('/proc/:code', async function(request, response) {
-//     try {
-//         const query = await pool;
-//         const result = await query.request()
-//             .input('MEM_CD', mssql.Numeric, parseInt(request.params.code))
-//             .execute("SELECT_PUM");
-//         response.json(result.recordset);
-//     } catch (error) {
-//         response.status(500);
-//         response.send(error.message);
-//     }
-// });
-
-// router.get('/proc/age/:age/gender/:gender', async function(request, response) {
-//     try {
-//         const query = await pool;
-//         const result = await query.request()
-//             .input('USER_AGE', mssql.Numeric, request.params.age)
-//             .input('USER_GENDER', mssql.NVarChar, request.params.gender)
-//             .execute("SELECT_PUM_AGE_GENDER");
-//         response.json(result.recordset);
-//     } catch (error) {
-//         response.status(500);
-//         response.send(error.message);
-//     }
-// });
 
 module.exports = router;
