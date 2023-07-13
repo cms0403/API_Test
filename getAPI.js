@@ -9,6 +9,10 @@ app.get('/', (request, response) => {
     response.sendFile(__dirname + '/page/index.html');
 })
 
+app.get('/login', (request, response) => {
+    response.sendFile(__dirname + '/page/login.html');
+})
+
 app.use('/user', require('./authmiddleware.js'));
 app.use('/user', require('./routes/userDB.js'));
 
@@ -26,14 +30,18 @@ app.post('/token', async (request, response, next) => {
 });
 
 app.get('/tokencheck', (request, response) => {
-    var token = request.headers['token'];
+    const token = request.headers['token'];
     try {
-        var payload = jwt.verify(token, SECRET_KEY);
-        console.log('토큰 인증 성공', payload);
-        response.json({ msg: 'success' });
+        const payload = jwt.verify(token, SECRET_KEY);
+        //console.log('토큰 인증 성공', payload);
+        response.json({ 
+            message: '정상 토큰 확인',
+            payload : payload
+        });
     } catch (error) {
         response.status(500);
         response.send(error.message);
+        console.log(error);
     }
 })
 
