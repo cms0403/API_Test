@@ -1,0 +1,14 @@
+{
+    "server": "",
+    "options": {"encrypt":false, "database": "" },
+    "authentication":{
+        "type":"default",
+        "options":{
+            "userName":"",
+            "password":""
+        }
+    },
+    "dialectOptions": {
+        "options": { "requestTimeout": 300000 }
+    }
+}
