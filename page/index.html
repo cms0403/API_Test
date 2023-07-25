@@ -250,6 +250,8 @@
                     "token":token
                 }
             }).then(res => {return res.json()}).then((data, res) => {
+                console.log(data);
+                console.log(res);
                 if(data.rowsAffected == 1){
                     alert(`${userCode}학번 생년월일 업데이트 완료`)
                 } else {
@@ -409,6 +411,7 @@
         fetch(`/token`, {
             method:"POST"
         }).then(res => res.json()).then(data => {
+            console.log(data)
             const token = data.token;
             document.cookie = `Access-Token=${token};path=/`;
             alert(data.message)

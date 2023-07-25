@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = require('./secret_key.js');
 
 const authMiddleware = async function(request, response, next) {
+	console.log(request.url);
 	const accessToken = request.headers['token'];
 	if (accessToken == null) {
 		response.status(403).json({success:false, errormessage:'토큰이 존재하지않습니다.'});
