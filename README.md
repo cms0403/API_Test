@@ -35,3 +35,9 @@ npm install express jsonwebtoken
 이렇게 작성된 코드는 Express를 사용하여 API 서버를 구성하고, JWT 토큰을 발급하고 검증하는 기능을 제공합니다. 
 `userDB.js` 파일은 데이터베이스와 관련된 라우팅을 처리하며, `authmiddleware.js` 파일은 토큰 인증을 위한 미들웨어 역할을 합니다. 
 `getAPI.js` 파일은 서버를 생성하고 라우터를 설정하여 API를 구축하고 서버를 실행하는 역할을 합니다.
+
+# SWAGGER
+swagger 를 이용하여 API에 대한 테스트 및 가이드 페이지를 추가하였습니다.
+/api-docs 경로를 통해 확인 가능합니다.
+
+swagger 내에서 API 테스트를 진행하기 위해서 통신 할때 토큰검증하는 authmiddleware.js 부분을 주석처리 하였습니다.
