@@ -6,7 +6,7 @@
 npm install express jsonwebtoken
       
 # API_Test
-. `getAPI.js` 파일:
+1. `getAPI.js` 파일:
     - `/` 경로에 대한 GET 요청을 처리하여 `index.html`을 응답합니다.
     - `/user` 경로에 대한 미들웨어 `authmiddleware.js`를 사용합니다.
     - `/user` 경로에 대한 라우터 `userDB.js`를 사용합니다.
